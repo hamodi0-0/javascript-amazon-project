@@ -152,7 +152,7 @@ const products = [
   },
   {
     id: "5968897c-4d27-4872-89f6-5bcb052746d7",
-    image: "images/products/women-chiffon-beachwear-coverup-black.jpg",
+    image: "images/products/intermediate-composite-basketball.jpg",
     name: "Women's Chiffon Beachwear Cover Up - Black",
     rating: {
       stars: 4.5,
@@ -295,7 +295,7 @@ const products = [
   },
   {
     id: "b0f17cc5-8b40-4ca5-9142-b61fe3d98c85",
-    image: "images/products/women-stretch-popover-hoodie-black.jpg",
+    image: "images/products/intermediate-composite-basketball.jpg",
     name: "Women's Stretch Popover Hoodie",
     rating: {
       stars: 4.5,
@@ -491,7 +491,7 @@ const products = [
   },
   {
     id: "a45cfa0a-66d6-4dc7-9475-e2b01595f7d7",
-    image: "images/products/women-french-terry-fleece-jogger-camo.jpg",
+    image: "images/products/intermediate-composite-basketball.jpg",
     name: "Women's Fleece Jogger Sweatpant",
     rating: {
       stars: 4.5,
