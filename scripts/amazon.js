@@ -1,4 +1,6 @@
 
+  import {cart} from '../data/cart.js'
+  
   let productsHTML = '';
 products.forEach((product)=>{
    productsHTML+= `
@@ -41,7 +43,7 @@ products.forEach((product)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -57,6 +59,8 @@ products.forEach((product)=>{
 document.querySelector('.js-products-grid')
       .innerHTML = productsHTML;
 
+      let timeOutIds ={};
+
       document.querySelectorAll('.js-add-to-cart')
       .forEach((button)=>{
         button.addEventListener('click',()=>{
@@ -65,6 +69,24 @@ document.querySelector('.js-products-grid')
 
          let selectQuantity = document
          .querySelector(`.js-quantity-selector-${productId}`).value;
+
+          let addedMessage = document
+          .querySelector(`.added-to-cart-${productId}`);
+          
+          addedMessage.classList
+            .add('style-added-message');
+
+            let formerTimeoutId = timeOutIds[productId];
+
+            if(formerTimeoutId){
+              clearTimeout(formerTimeoutId);
+            }
+
+            let timeoutId = setTimeout(()=>{
+            addedMessage.classList.remove('style-added-message');
+           },2000)
+
+           timeOutIds[productId] = timeoutId;
 
          let matchingItem;
 
