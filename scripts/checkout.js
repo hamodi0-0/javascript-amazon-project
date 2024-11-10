@@ -1,5 +1,5 @@
 import {
-  calculateCartQuantity, cart, removeFromCart,saveToStorage,updateQuantity
+  calculateCartQuantity, cart, removeFromCart,saveToStorage,updateQuantity,updateDeliveryOption
 } from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
@@ -36,8 +36,9 @@ cart.forEach((cartItem)=>{
 
   });
 
-  const deliveryOptionId = cartItem.
-  deliveryOptionId;
+  
+
+  const deliveryOptionId = cartItem.deliveryOptionId;
 
   let deliveryOption;
 
@@ -84,7 +85,10 @@ cart.forEach((cartItem)=>{
           data-product-id="${matchingProduct.id}">
             Update
           </span>
-          <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+          
+          <input class="quantity-input js-quantity-input-${matchingProduct.id} js-quantity-input"
+          data-product-id="${matchingProduct.id}">
+
           <span class="save-quantity-link link-primary"
           data-product-id="${matchingProduct.id}">
           Save
@@ -128,7 +132,9 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
     const isChecked = deliveryOption.id === cartItem.deliveryOptionId
 
     html+=`
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option"
+      data-product-id = "${matchingProduct.id}"
+      data-delivery-option-id = "${deliveryOption.id}">
           <input type="radio"
           ${isChecked ? 'checked':''}
             class="delivery-option-input"
@@ -210,4 +216,48 @@ document.querySelector('.js-order-summary')
       })
     });
 
-   
+    function enterSaveQuantity(){
+
+      document.querySelectorAll(`.js-quantity-input`)
+      .forEach((input)=>{
+        input.addEventListener('keydown',(event)=>{
+
+      if(event.key==='Enter'){
+
+      const productId = input.dataset.productId;
+
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      container.classList.remove('is-editing-quantity');
+
+      const quantityInput = document.querySelector(
+        `.js-quantity-input-${productId}`
+      );
+      const newQuantity = Number(quantityInput.value);
+
+      updateQuantity(productId,newQuantity);
+
+      const quantityLabel = document.querySelector(
+        `.js-quantity-label-${productId}`
+      );
+      quantityLabel.innerHTML = newQuantity;
+        
+      updateCartQuantity();
+          }
+
+        })
+        
+      })
+    }
+    enterSaveQuantity();
+    
+document.querySelectorAll('.js-delivery-option')
+  .forEach((element)=>{
+    element.addEventListener('click',()=>{
+
+      const {productId,deliveryOptionId} = element.dataset
+
+      updateDeliveryOption(productId,deliveryOptionId)
+    })
+  })
