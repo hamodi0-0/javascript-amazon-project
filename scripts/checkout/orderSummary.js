@@ -5,11 +5,7 @@ import {products,getProduct} from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions,getDeliveryOption } from '../../data/deliveryOptions.js';
-
-const today = dayjs();
-const deliveryDate = today.add(7,'days');
-deliveryDate.format('dddd, MMMM D');
-
+import { renderPaymentSummary } from './paymentSummary.js';
 
   function updateCartQuantity(){
     
@@ -159,7 +155,9 @@ deliveryDate.format('dddd, MMMM D');
           container.remove();
           updateCartQuantity();
 
-        })
+
+          renderPaymentSummary();
+        });
     });
 
     document.querySelectorAll('.js-update-link')
@@ -249,6 +247,7 @@ deliveryDate.format('dddd, MMMM D');
         const {productId,deliveryOptionId} = element.dataset
         updateDeliveryOption(productId,deliveryOptionId);
         renderOrderSummary();
+        renderPaymentSummary();
       })
     });
   }
