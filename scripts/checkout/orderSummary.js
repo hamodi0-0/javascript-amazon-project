@@ -47,7 +47,9 @@ import { renderCheckoutHeader } from './checkoutHeader.js';
 
     const dateString = calculateDeliveryDate(deliveryOption);
 
-    cartSummaryHTML+=`<div class="cart-item-container 
+    cartSummaryHTML+=`
+    <div class="cart-item-container 
+    js-cart-item-container
     js-cart-item-container-${matchingProduct.id}">
       <div class="delivery-date">
         Delivery date: ${dateString}
@@ -246,5 +248,20 @@ import { renderCheckoutHeader } from './checkoutHeader.js';
         renderPaymentSummary();
       })
     });
+  }
+  export function selectingQuantity(){
+    document.querySelectorAll('.js-quantity-selector')
+    .forEach((element)=>{
+      element.addEventListener('click',()=>{
+
+        const {productId} = element.dataset
+        let selectQuantity = document
+        .querySelector(`.js-quantity-selector-${productId}`).value;
+
+        return selectQuantity;
+      })
+    });
+  
+    
   }
   
