@@ -94,6 +94,8 @@ export function loadProductsFetch(){
       });
     
       console.log('load products');
+    }).catch((error)=>{
+      console.log('Oops. theres an error :/')
     });
    return promise;
 };

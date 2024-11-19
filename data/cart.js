@@ -108,4 +108,12 @@ export function loadCart(fun){
   });
   xhr.open('GET', 'https://supersimplebackend.dev/cart')
   xhr.send();
+ /*
+  const promise = fetch('https://supersimplebackend.dev/cart')
+    .then((response)=>{
+      return console.log(response)
+    })
+
+    return promise;
+    */
 }
