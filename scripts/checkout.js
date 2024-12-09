@@ -2,15 +2,21 @@ import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import "../data/van.js";
-import { loadProducts, loadProductsFetch } from "../data/products.js";
-import { loadCart } from "../data/cart.js";
+import { loadProducts, loadProductsFetch, products } from "../data/products.js";
+import {  loadCartFetch, loadFromStorage } from "../data/cart.js";
 //import '../data/backend-practice.js'
+import { cart } from "../data/cart.js";
+
 
 async function loadPage(){
   try {
-    await loadProductsFetch();
-
-  await loadCart();
+    await Promise.all(
+      [
+        loadCartFetch(),
+        loadProductsFetch()
+        
+      ]
+    );       
   } catch(error){
     console.log('Unexpected error, skill issue')
   }
@@ -21,6 +27,7 @@ async function loadPage(){
 }
 
 loadPage()
+
 /*
 Promise.all([
   loadProductsFetch(),

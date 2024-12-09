@@ -1,16 +1,48 @@
 
   import {addToCart, cart} from '../data/cart.js'
-  import {products,loadProducts} from '../data/products.js'
+  import {products,loadProducts, loadingProductsFetch} from '../data/products.js'
   import { formatCurrency } from './utils/money.js';
   import { calculateCartQuantity } from '../data/cart.js';
   
-  loadProducts(renderProductsGrid);
+ // loadingProductsFetch(renderProductsGrid);
+  renderProductsGrid();
+
+  export  function updateCartQuantity(){
+
+        let cartQuantity = calculateCartQuantity();
+
+        document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuantity;
+      }
 
   function renderProductsGrid(){
 
-  
-  let productsHTML = '';
-products.forEach((product)=>{
+    let filteredProducts = products;
+    const url = new URL(window.location.href);
+    const search = url.searchParams.get('search');
+
+    if(search){
+      filteredProducts = products.filter((product)=>{
+        const lowerCase = product.name.toLowerCase()
+        const keywords = product.keywords;
+
+        let result;
+        keywords.forEach((word) => {
+          if(word === search.toLowerCase()){
+            result = true
+            
+          } 
+        });
+        
+
+        return lowerCase.includes(search.toLowerCase()) || result;
+      })
+    }
+
+
+    let productsHTML = '';
+
+    filteredProducts.forEach((product)=>{
    productsHTML+= `
   <div class="product-container">
           <div class="product-image-container">
@@ -67,17 +99,13 @@ products.forEach((product)=>{
   `;
 });
 
-document.querySelector('.js-products-grid')
+      document.querySelector('.js-products-grid')
       .innerHTML = productsHTML;
 
 
-      function updateCartQuantity(){
+      
 
-        let cartQuantity = calculateCartQuantity();
-
-        document.querySelector('.js-cart-quantity')
-        .innerHTML = cartQuantity;
-      }
+      updateCartQuantity();
 
       function displayAddedMessage(productId){
 
@@ -119,3 +147,13 @@ document.querySelector('.js-products-grid')
         
       });
     };
+
+   
+    document.querySelector('.js-search-button')
+      .addEventListener('click',()=>{
+       
+        const searchBar = document.querySelector('.js-search-bar');
+
+        window.location.href = `amazon.html?search=${searchBar.value}`;
+       
+      })

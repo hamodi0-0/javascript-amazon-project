@@ -1,5 +1,6 @@
 import {
-  calculateCartQuantity, cart, removeFromCart,saveToStorage,updateQuantity,updateDeliveryOption
+  calculateCartQuantity, cart, removeFromCart,saveToStorage,updateQuantity,updateDeliveryOption,
+  loadFromStorage
 } from '../../data/cart.js';
 import {products,getProduct} from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
@@ -30,6 +31,7 @@ import { renderCheckoutHeader } from './checkoutHeader.js';
 
   export function renderOrderSummary(){
 
+    let cart = loadFromStorage();
 
   let cartSummaryHTML = '';
 
@@ -261,7 +263,5 @@ import { renderCheckoutHeader } from './checkoutHeader.js';
         return selectQuantity;
       })
     });
-  
-    
   }
   

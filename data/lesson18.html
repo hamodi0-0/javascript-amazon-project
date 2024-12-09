@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final exercise</title>
+</head>
+<body>
+  <script>
+    async function loadGreeting() {
+      const response = await fetch('https://supersimplebackend.dev/greeting',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({
+          name: 'hamodi'
+        })
+      });
+      const greeting = await response.text();
+      console.log(greeting)
+    }
+    //loadGreeting()
+
+    async function amazonGreeting() {
+      try {const response = await fetch('https://amazon.com')
+      const data = await response.json();
+      console.log(data)}
+      catch(error){
+        console.log('CORS error. Your request was blocked by the backend')
+      }
+    }
+   
+    //amazonGreeting()
+
+    async function loadGreetingError() {
+      try {
+        const response = await fetch('https://supersimplebackend.dev/greeting',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+          }
+      });
+      
+      
+     if (response.status >= 400){
+      throw response
+     }
+
+     const greeting = await response.text();
+     console.log(greeting)
+     
+    }  catch(error){
+      if(error.status === 400){
+        const errorMessage = await error.json();
+        
+        console.log(errorMessage);
+      } else{
+        console.log('Network error, please try again later')
+      }
+     }
+
+    }
+    loadGreetingError();
+   /*
+      fetch('https://supersimplebackend.dev/greeting').then((response)=>{
+     return response.text()
+
+    }).then((data)=>{
+      console.log(data)
+    })
+      */
+  
+  </script>
+</body>
+</html>

@@ -12,12 +12,15 @@ export function getProduct(productId){
     return matchingProduct;
 }
 
+
+
 class Product {
   id;
   image;
   name;
   rating;
   priceCents;
+  keywords;
 
   constructor(productDetails){
   this.id = productDetails.id;
@@ -25,6 +28,7 @@ class Product {
   this.name = productDetails.name;
   this.rating = productDetails.rating;
   this.priceCents = productDetails.priceCents;
+  this.keywords = productDetails.keywords
   }
 
   getStarsUrl(){
@@ -74,16 +78,39 @@ class Appliance extends Product{
 
 }
 
-export let products = [];
 
-export function loadProductsFetch(){
+ export let products = await loadingProductsFetch();
+
+export async function  loadingProductsFetch(){
+  let productsArr;
+
+  const response = await fetch('https://supersimplebackend.dev/products');
+
+  const productsData = await response.json();
+
+  productsArr = productsData.map((productDetails)=>{
+    if (productDetails.type === 'clothing'){
+      return new Clothing(productDetails)
+    } 
+    else if(productDetails.type === 'appliance'){
+      return new Appliance(productDetails)
+    }
+    return new Product(productDetails)
+  });
+
+ return productsArr
+};
+
+
+
+ export function loadProductsFetch(){
    const promise = fetch(
     'https://supersimplebackend.dev/products'
   ).then((response)=>{
        return response.json();
     }).then((productsData)=>{
 
-      products = productsData.map((productDetails)=>{
+        products = productsData.map((productDetails)=>{
         if (productDetails.type === 'clothing'){
           return new Clothing(productDetails)
         } 
@@ -92,8 +119,8 @@ export function loadProductsFetch(){
         }
         return new Product(productDetails)
       });
-    
-      console.log('load products');
+      
+     
     }).catch((error)=>{
       console.log('Oops. theres an error :/')
     });
@@ -101,8 +128,9 @@ export function loadProductsFetch(){
 };
 
 
-export function loadProducts(fun){
+export function loadProducts(){
   const xhr = new XMLHttpRequest;
+  
   xhr.addEventListener('load', ()=>{
   products = JSON.parse(xhr.response).map((productDetails)=>{
     if (productDetails.type === 'clothing'){
@@ -114,13 +142,12 @@ export function loadProducts(fun){
     return new Product(productDetails)
   });
 
-  console.log('load products');
-
-  fun();
   });
   xhr.open('GET', 'https://supersimplebackend.dev/products')
   xhr.send();
+  
 }
+
 
 
 

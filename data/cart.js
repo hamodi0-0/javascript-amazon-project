@@ -1,6 +1,8 @@
-export let cart;
+export let cart = JSON.parse(
+  localStorage.getItem('cart')
+) || [];
 
-loadFromStorage();
+//loadFromStorage();
 
 export function loadFromStorage(){
   cart = JSON.parse(
@@ -17,6 +19,13 @@ export function loadFromStorage(){
     deliveryOptionId:'2'
   }
   ];
+  return cart
+}
+
+function selectingQuantity(productId){
+  let selectQuantity = document.querySelector(`.js-quantity-selector-${productId}`).value;
+
+  return selectQuantity
 }
 
 export function saveToStorage(){
@@ -27,8 +36,7 @@ export function addToCart(productId){
 
   let matchingItem;
 
-  let selectQuantity = document
-  .querySelector(`.js-quantity-selector-${productId}`).value;
+  let selectQuantity = selectingQuantity(productId);
 
   cart.forEach((cartItem)=>{
    if(productId === cartItem.productId){
@@ -71,6 +79,9 @@ export function removeFromCart(productId){
   cart.forEach((cartItem)=>{
     cartQuantity+=cartItem.quantity
   })
+
+  localStorage.setItem('cartQuantity',JSON.stringify(cartQuantity));
+
   return cartQuantity
 }
 
@@ -99,7 +110,7 @@ export function updateDeliveryOption(productId,deliveryOptionId){
   saveToStorage();
 };
 
-export async function loadCart(){
+export async function loadCartFetch(){
    /*
   const xhr = new XMLHttpRequest;
   xhr.addEventListener('load', ()=>{
@@ -112,6 +123,5 @@ export async function loadCart(){
    */
     const response = await fetch('https://supersimplebackend.dev/cart')
     const data = await response.text();
-    console.log(data)
-
+    
 }

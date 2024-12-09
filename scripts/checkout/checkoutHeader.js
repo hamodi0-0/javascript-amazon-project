@@ -3,7 +3,6 @@ import { calculateCartQuantity } from "../../data/cart.js";
 export function renderCheckoutHeader(){
 
  const checkoutHeaderHTML = `
-
       <div class="header-content">
         <div class="checkout-header-left-section">
           <a href="amazon.html">
